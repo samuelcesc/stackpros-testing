@@ -1,0 +1,16 @@
+version: "3"
+services:
+  api:
+    build: ./api
+    volumes:
+      - .:/code/api
+    ports:
+      - "80:80"
+  web:
+    build: ./client
+    volumes:
+      - .:/code/client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
