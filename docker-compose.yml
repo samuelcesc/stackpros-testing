@@ -7,9 +7,9 @@ services:
     ports:
       - "80:80"
   web:
-    build: ./client
+    build: ./web
     volumes:
-      - .:/code/client
+      - .:/code/web
     ports:
       - "3000:3000"
     depends_on:
