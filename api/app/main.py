@@ -19,7 +19,7 @@ app.add_middleware(
 )
 
 
-Browser = DirectoryBrowser()
+Browser = DirectoryBrowser(file_path="/code/app/directory.json")
 
 
 @ app.get("/{full_path:path}")

@@ -6,9 +6,9 @@ from typing import Union
 class DirectoryBrowser:
     """ Simple directory browser class """
 
-    def __init__(self) -> None:
+    def __init__(self, file_path: str) -> None:
         self.output = {}
-        self.paths = self.__decode_routes_from_file()
+        self.paths = self.__decode_routes_from_file(file_path=file_path)
 
     def filter(self, key) -> Union[list, dict, None]:
         """ Returns a file object or directory dictionary based on it's key"""
@@ -50,9 +50,9 @@ class DirectoryBrowser:
                 )
         return self.output
 
-    def __decode_routes_from_file(self) -> dict:
+    def __decode_routes_from_file(self, file_path) -> dict:
         """This transforms the format given to a routes format"""
-        file = open('/code/app/directory.json', encoding='utf-8')
+        file = open(file_path, encoding='utf-8')
 
         contents = json.load(file)
 
