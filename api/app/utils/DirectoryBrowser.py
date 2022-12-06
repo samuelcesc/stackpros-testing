@@ -7,6 +7,7 @@ class DirectoryBrowser:
     """ Simple directory browser class """
 
     def __init__(self) -> None:
+        self.output = {}
         self.paths = self.__decode_routes_from_file()
 
     def filter(self, key) -> Union[list, dict, None]:
@@ -15,14 +16,13 @@ class DirectoryBrowser:
             return self.paths[key]
         return None
 
-    def decode_routes(self, current_route: str, contents: dict) -> dict:
+    def _decode_routes(self, current_route: str, contents: dict) -> dict:
         """ Private method to decode routes """
-        output = {}
 
         for key in contents:
+            current_path = f"{current_route}/{key}"
             if 'type' in contents[key] and contents[key]['type'] == 'file':
-                next_path = f"{current_route}/{key}"
-                output[next_path] = {
+                self.output[current_path] = {
                     "type": contents[key]['type'],
                     "name": key
                 }
@@ -34,11 +34,11 @@ class DirectoryBrowser:
                         "type": directory_contents[child]['type'],
                         "name": child
                     })
-                output[current_route] = parent_directory_contents
-                self.decode_routes(
-                    f"{current_route}", directory_contents
+                self.output[current_path] = parent_directory_contents
+                self._decode_routes(
+                    f"{current_path}", directory_contents
                 )
-        return output
+        return self.output
 
     def __decode_routes_from_file(self) -> dict:
         """This transforms the format given to a routes format"""
@@ -46,29 +46,9 @@ class DirectoryBrowser:
 
         contents = json.load(file)
 
-        data = self.decode_routes(
+        data = self._decode_routes(
             current_route='', contents=contents['children'])
-
-        # print(data)
 
         file.close()
 
-        return {
-            '/': [{"type": "dir", "name": "home"}],
-            '/home': [{"type": "dir", "name": "myname"}],
-            '/home/myname':  [
-                {"type": "file", "name": "filea.txt"},
-                {"type": "file", "name": "fileb.txt"},
-                {"type": "dir", "name": "projects"}
-            ],
-            '/home/myname/filea.txt': {"type": "file", "name": "filea.txt"},
-            '/home/myname/fileb.txt': {"type": "file", "name": "fileb.txt"},
-            '/home/myname/projects': [{"type": "dir", "name": "mysupersecretproject"}],
-            '/home/myname/projects/mysupersecretproject': [
-                {"type": "file", "name": "mysupersecretfile"}
-            ],
-            '/home/myname/projects/mysupersecretproject/mysupersecretfile': {
-                "type": "file",
-                "name": "mysupersecretfile"
-            }
-        }
+        return data
