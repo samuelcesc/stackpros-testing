@@ -5,7 +5,7 @@ services:
     volumes:
       - .:/code/api
     ports:
-      - "80:80"
+      - "8000:80"
   web:
     build: ./web
     volumes:
