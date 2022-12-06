@@ -52,7 +52,7 @@ class DirectoryBrowser:
 
     def __decode_routes_from_file(self) -> dict:
         """This transforms the format given to a routes format"""
-        file = open('directory.json', encoding='utf-8')
+        file = open('/code/app/directory.json', encoding='utf-8')
 
         contents = json.load(file)
 
