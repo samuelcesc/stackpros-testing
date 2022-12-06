@@ -1,8 +1,23 @@
 from typing import Union
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class DirectoryBrowser:
@@ -30,12 +45,15 @@ class DirectoryBrowser:
             '/home': [{"type": "dir", "name": "myname"}],
             '/home/myname':  [
                 {"type": "file", "name": "filea.txt"},
-                {"type": "file", "name": "fileb.txt"}
+                {"type": "file", "name": "fileb.txt"},
+                {"type": "dir", "name": "projects"}
             ],
             '/home/myname/filea.txt': {"type": "file", "name": "filea.txt"},
             '/home/myname/fileb.txt': {"type": "file", "name": "fileb.txt"},
             '/home/myname/projects': [{"type": "dir", "name": "mysupersecretproject"}],
-            '/home/myname/projects/mysupersecretproject': [{"type": "file", "name": "home"}],
+            '/home/myname/projects/mysupersecretproject': [
+                {"type": "file", "name": "mysupersecretfile"}
+            ],
             '/home/myname/projects/mysupersecretproject/mysupersecretfile': {
                 "type": "file",
                 "name": "mysupersecretfile"
@@ -52,5 +70,5 @@ def return_path(full_path: str):
     path = f"/{full_path}"
     data = Browser.filter(path)
     if data:
-        return data
-    return {"Not found"}, 404
+        return JSONResponse(data, status_code=200)
+    return JSONResponse({"message": "Not found"}, status_code=400)
