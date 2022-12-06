@@ -38,7 +38,6 @@ class DirectoryBrowser:
                 self.decode_routes(
                     f"{current_route}", directory_contents
                 )
-            print(output)
         return output
 
     def __decode_routes_from_file(self) -> dict:
@@ -54,23 +53,22 @@ class DirectoryBrowser:
 
         file.close()
 
-        return data
-        # return {
-        #     '/': [{"type": "dir", "name": "home"}],
-        #     '/home': [{"type": "dir", "name": "myname"}],
-        #     '/home/myname':  [
-        #         {"type": "file", "name": "filea.txt"},
-        #         {"type": "file", "name": "fileb.txt"},
-        #         {"type": "dir", "name": "projects"}
-        #     ],
-        #     '/home/myname/filea.txt': {"type": "file", "name": "filea.txt"},
-        #     '/home/myname/fileb.txt': {"type": "file", "name": "fileb.txt"},
-        #     '/home/myname/projects': [{"type": "dir", "name": "mysupersecretproject"}],
-        #     '/home/myname/projects/mysupersecretproject': [
-        #         {"type": "file", "name": "mysupersecretfile"}
-        #     ],
-        #     '/home/myname/projects/mysupersecretproject/mysupersecretfile': {
-        #         "type": "file",
-        #         "name": "mysupersecretfile"
-        #     }
-        # }
+        return {
+            '/': [{"type": "dir", "name": "home"}],
+            '/home': [{"type": "dir", "name": "myname"}],
+            '/home/myname':  [
+                {"type": "file", "name": "filea.txt"},
+                {"type": "file", "name": "fileb.txt"},
+                {"type": "dir", "name": "projects"}
+            ],
+            '/home/myname/filea.txt': {"type": "file", "name": "filea.txt"},
+            '/home/myname/fileb.txt': {"type": "file", "name": "fileb.txt"},
+            '/home/myname/projects': [{"type": "dir", "name": "mysupersecretproject"}],
+            '/home/myname/projects/mysupersecretproject': [
+                {"type": "file", "name": "mysupersecretfile"}
+            ],
+            '/home/myname/projects/mysupersecretproject/mysupersecretfile': {
+                "type": "file",
+                "name": "mysupersecretfile"
+            }
+        }
